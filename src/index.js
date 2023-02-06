@@ -22,3 +22,14 @@ app.get('/talker', async (req, res) => {
   if (!response) return res.status(200).json([]);
   return res.status(200).json(response);
   });
+
+app.get('/talker/:id', async (req, res) => {
+  const { id } = req.params;
+  const response = await readDB();
+  if (!response) {
+ return res.status(404).json({
+    message: 'Pessoa palestrante não encontrada',
+  }); 
+}
+  return res.status(200).json(response[id - 1]);
+  });
