@@ -1,4 +1,5 @@
 const express = require('express');
+const crypto = require('crypto');
 
 const { readDB } = require('./utils/crud');
 
@@ -33,3 +34,14 @@ app.get('/talker/:id', async (req, res) => {
   }
   return res.status(200).json(response[id - 1]);
   });
+
+app.post('/login', async (req, res) => {
+  // const { email } = req.body;
+  // const { password } = req.body;
+  const randomToken = crypto.randomBytes(8).toString('hex');
+  console.log(randomToken);
+
+  return res.status(200).json({
+    token: randomToken,
+  });
+  });  
