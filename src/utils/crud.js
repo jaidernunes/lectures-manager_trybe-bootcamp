@@ -10,6 +10,16 @@ async function readDB() {
   }
 }
 
+async function writeDB(data) {
+  try {
+    const json = JSON.stringify(data);
+    await fs.writeFile('src/talker.json', json);
+  } catch (err) {
+    console.error(err.message);
+  }
+}
+
 module.exports = {
   readDB,
+  writeDB,
 };
