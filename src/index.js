@@ -62,3 +62,21 @@ app.post('/login', loginValidator, async (req, res) => {
     writeDB(updatedDB);
     return res.status(201).json(addTalker);
   });
+
+  app.put('/talker/:id', 
+  tokenValidator,
+  nameValidator,
+  ageValidator,
+  talkValidator,
+  watchedAtValidator,
+  rateValidator, async (req, res) => {
+    const { id } = req.params;
+    const talkersDB = await readDB();
+    const updateTalker = { ...req.body, id: Number(id) };
+    const indexId = talkersDB.findIndex((talker) => talker.id === id);
+    talkersDB[indexId] = updateTalker;
+    // const updatedDB = [...talkersDB, addTalker];
+    console.log(talkersDB);
+    writeDB(talkersDB);
+    return res.status(200).json(talkersDB[indexId]);
+  });
