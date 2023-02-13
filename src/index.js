@@ -74,10 +74,17 @@ app.post('/login', loginValidator, async (req, res) => {
     const { name, age, talk: { watchedAt, rate } } = req.body;
     const talkersDB = await readDB();
     const updateTalker = { age, name, talk: { watchedAt, rate }, id: Number(id) };
-    // const updateTalker = { ...req.body, id: Number(id) };
-    const indexId = talkersDB.findIndex((talker) => talker.id === id);
+    const indexId = talkersDB.findIndex((talker) => talker.id === Number(id));
     talkersDB[indexId] = updateTalker;
-    // const updatedDB = [...talkersDB, addTalker];
-    await writeDB(talkersDB);
+    writeDB(talkersDB);
     return res.status(200).json(talkersDB[indexId]);
+  });
+
+  app.delete('/talker/:id', tokenValidator, async (req, res) => {
+    const { id } = req.params;
+    const talkersDB = await readDB();
+    const indexId = talkersDB.findIndex((talker) => talker.id === Number(id));
+    talkersDB.splice(indexId, 1);
+    writeDB(talkersDB);
+    return res.status(204).json('');
   });
